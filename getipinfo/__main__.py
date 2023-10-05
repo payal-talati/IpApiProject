@@ -46,6 +46,7 @@ def main(args=None):
 
     # Requests IP location
     s = requests.session()
+    
     print(get_logitude_latitude(s, args.ip))
 
 
