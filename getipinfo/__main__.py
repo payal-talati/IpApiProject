@@ -4,6 +4,7 @@ import sys
 
 import requests
 from dotenv import load_dotenv
+import json
 
 
 # Project configurations, all initialisaion and env settings can be done here
@@ -12,10 +13,17 @@ def proj_configure():
 
 
 def get_logitude_latitude(session, ip):
+    """Takes in IP address and session and returns json data
+    for logitude and latitude"""
+
     url = f"http://api.ipstack.com/{ip}?access_key={os.getenv('access_key')}"
     response = session.get(url)
     data = response.json()
-    return data["longitude"], data["latitude"]
+    reuired_data = {
+        "longitude": data["longitude"],
+        "latitude": data["latitude"]
+    }
+    return json.dumps(reuired_data)
 
 
 def main(args=None):
@@ -38,10 +46,7 @@ def main(args=None):
 
     # Requests IP location
     s = requests.session()
-    longitude, latitude = get_logitude_latitude(s, args.ip)
-
-    # This print may not be necessary....
-    print(f"IP Location:Longitude={longitude},Latitude={latitude}")
+    print(get_logitude_latitude(s, args.ip))
 
 
 if __name__ == "__main__":
